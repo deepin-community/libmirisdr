@@ -1,0 +1,84 @@
+From: "A. Maitland Bottoms" <bottoms@debian.org>
+Date: Sat, 11 Jul 2020 17:15:23 +0200
+Forwarded: not-needed
+Subject: Debian library path conventions (and disable custom rpath)
+
+Upstream might consider using a newer cmake_minimum_required
+and include(GNUInstallDirs) too.
+
+---
+ CMakeLists.txt | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,21 +20,23 @@
+ ########################################################################
+ # Project setup
+ ########################################################################
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.13.4)
+ project(mirisdr C)
+ 
++include(GNUInstallDirs)
++
+ # use, i.e. don't skip the full RPATH for the build tree
+-set(CMAKE_SKIP_BUILD_RPATH  FALSE)
++set(CMAKE_SKIP_BUILD_RPATH TRUE)
+ 
+ # when building, don't use the install RPATH already
+ # (but later on when installing)
+ set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+ 
+-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
++SET(CMAKE_INSTALL_RPATH "")
+ 
+ # add the automatically determined parts of the RPATH
+ # which point to directories outside the build tree to the install RPATH
+-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+ 
+ #select the release build type by default to get optimization flags
+ if(NOT CMAKE_BUILD_TYPE)
+@@ -48,7 +50,7 @@
+ # Set the version information here
+ set(VERSION_INFO_MAJOR_VERSION 4) # increment major on api compatibility changes
+ set(VERSION_INFO_MINOR_VERSION 0) # increment minor on feature-level changes
+-set(VERSION_INFO_PATCH_VERSION git) # increment patch for bug fixes and docs
++set(VERSION_INFO_PATCH_VERSION 0) # increment patch for bug fixes and docs
+ include(Version) # setup version info
+ 
+ ########################################################################
+@@ -141,11 +143,6 @@
+     UNSET(MIRISDR_PC_LIBS)
+ ENDIF(CMAKE_CROSSCOMPILING)
+ 
+-set(prefix ${CMAKE_INSTALL_PREFIX})
+-set(exec_prefix \${prefix})
+-set(libdir \${exec_prefix}/lib${LIB_SUFFIX})
+-set(includedir \${prefix}/include)
+-
+ CONFIGURE_FILE(
+     ${CMAKE_CURRENT_SOURCE_DIR}/libmirisdr.pc.in
+     ${CMAKE_CURRENT_BINARY_DIR}/libmirisdr.pc
+@@ -153,7 +150,7 @@
+ 
+ INSTALL(
+     FILES ${CMAKE_CURRENT_BINARY_DIR}/libmirisdr.pc
+-    DESTINATION lib${LIB_SUFFIX}/pkgconfig
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+ )
+ 
+ ########################################################################
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -85,8 +85,4 @@
+ ########################################################################
+ # Install built library files & utilities
+ ########################################################################
+-install(TARGETS ${INSTALL_TARGETS}
+-    LIBRARY DESTINATION lib${LIB_SUFFIX} # .so/.dylib file
+-    ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
+-    RUNTIME DESTINATION bin              # .dll file
+-)
++install(TARGETS ${INSTALL_TARGETS})

@@ -1,0 +1,2 @@
+debian/libmirisdr4.metainfo.xml usr/share/metainfo
+usr/lib/*/lib*.so.*
