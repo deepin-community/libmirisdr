@@ -1,4 +1,11 @@
 #!/usr/bin/make -f
+DEB_BUILD_MAINT_OPTIONS += hardening=+all
+export DEB_BUILD_MAINT_OPTIONS
 
 %:
-	dh $@
+	dh $@ --buildsystem=cmake
+
+override_dh_installudev:
+	dh_installudev
+	set -e; if test -d debian/libmirisdr4/lib/udev/rules.d; then mv debian/libmirisdr4/lib/udev debian/libmirisdr4/usr/lib; fi
+	set -e; if test -d debian/libmirisdr4/lib; then rmdir debian/libmirisdr4/lib; fi

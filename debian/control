@@ -1,15 +1,57 @@
-Source: template-repository
-Section: unknown
+Source: libmirisdr
+Section: libs
 Priority: optional
-Maintainer: Tsic404 <liuheng@deepin.org>
-Build-Depends: debhelper (>= 11)
-Standards-Version: 4.1.3
-Homepage: https://github.com/deepin-community/template-repository
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
+Maintainer: A. Maitland Bottoms <bottoms@debian.org>
+Build-Depends: cmake, debhelper-compat (= 13), libusb-1.0-0-dev, pkg-config
+Standards-Version: 4.6.2
+Homepage: https://github.com/f4exb/libmirisdr-4/
+Rules-Requires-Root: no
+Vcs-Browser: https://salsa.debian.org/debian-hamradio-team/libmirisdr/
+Vcs-Git: https://salsa.debian.org/debian-hamradio-team/libmirisdr.git
 
-Package: template-repository
+Package: libmirisdr-dev
+Section: libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Pre-Depends: ${misc:Pre-Depends}
+Depends: libmirisdr4 (= ${binary:Version}), ${misc:Depends}
+Description: Software defined radio support for Mirics hardware (development files)
+ Software for the Mirics MSi2500 + MSi001 SDR platform
+ .
+ The hardware part of MiriSDR brings information from an antenna connector
+ to a USB plug.
+ .
+ This package is the software that provides control of the USB hardware
+ and an API to pass data to software defined radio applications on the host.
+ .
+ This package contains development files.
+
+Package: libmirisdr4
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Multi-Arch: same
+Description: Software defined radio support for Mirics hardware (library)
+ Software for the Mirics MSi2500 + MSi001 SDR platform
+ .
+ The hardware part of MiriSDR brings information from an antenna connector
+ to a USB plug.
+ .
+ This package is the software that provides control of the USB hardware
+ and an API to pass data to software defined radio applications on the host.
+ .
+ This package contains the shared library.
+
+Package: miri-sdr
+Section: comm
+Architecture: any
+Depends: libmirisdr4 (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Description: Software defined radio support for Mirics hardware (tools)
+ Software for the Mirics MSi2500 + MSi001 SDR platform
+ .
+ The hardware part of MiriSDR brings information from an antenna connector
+ to a USB plug.
+ .
+ This package is the software that provides control of the USB hardware
+ and an API to pass data to software defined radio applications on the host.
+ .
+ This package contains a set of command line utilities:

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component>
+  <id>libmirisdr4</id>
+  <metadata_license>MIT</metadata_license>
+  <name>libmirisdr4</name>
+  <summary>Control of Mirics hardware radio receivers</summary>
+  <description>
+    <p>
+libmirisdr is software defined radio (SDR) receiver software for certain
+USB dongles using the Mirics MSi2500 + MSi001 SDR platform.
+    </p>
+  </description>
+  <provides>
+    <modalias>usb:v1DF7p2500d*</modalias>
+    <modalias>usb:v04BBp0537d*</modalias>
+    <modalias>usb:v1DF7p3000d*</modalias>
+    <modalias>usb:v1DF7p3010d*</modalias>
+  </provides>
+</component>

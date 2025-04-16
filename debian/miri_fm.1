@@ -1,0 +1,97 @@
+.TH "miri_fm" 1 "2.0.0" MiriSDR "User Commands"
+.SH NAME
+miri_fm \- a simple narrow band FM demodulator for Mirics based receivers
+.SH DESCRIPTION
+Software for the Mirics MSi2500 + MSi001 SDR platform
+.LP
+written because people could not do real time
+FM demod on Atom hardware with GNU radio
+based on rtl_sdr.c and rtl_tcp.c
+.SH USAGE
+This program captures information from a band of frequencies
+and outputs the data in a form useful to other software radio
+programs.
+.SH SYNOPSIS
+.B  miri_fm [-f freq] [OPTIONS] [output file]
+.SH OPTIONS
+.IP "-f frequency_to_tune_to [Hz]"
+.IP "   use multiple -f for scanning (requires squelch)"
+.IP "   ranges supported, -f 118M:137M:25k"
+.IP "-M modulation (default: fm)"
+.IP "   fm, wbfm, raw, am, usb, lsb"
+.IP "   wbfm == -M fm -s 170k -o 4 -A fast -r 32k -l 0 -E deemp"
+.IP "   raw mode outputs 2x16 bit IQ pairs"
+.IP "-s sample_rate (default: 24 kHz)"
+.IP "-d device_index (default: 0)"
+.IP "-T device_type device variant (default: 0)"
+.IP "   0:       Default"
+.IP "   1:       SDRPlay"
+.IP "-g tuner_gain (default: automatic)"
+.IP "-m sample format (default: auto)"
+.IP "   504:    S8 (fastest)"
+.IP "   384:    S10 +2bits"
+.IP "   252:    S14"
+.IP "-e USB transfer mode (default: 1)"
+.IP "   1:      Isochronous (maximum 196.608 Mbit/s)"
+.IP "   2:      Bulk (maximum 333Mbit/s, depends on controller type)"
+.IP "-i IF mode (default: ZERO)"
+.IP "   0:       ZERO"
+.IP "   450000:  450 kHz"
+.IP "   1620000: 1620kHz"
+.IP "   2048000: 2048kHz"
+.IP "-w BW mode (default: 8MHz)"
+.IP "   200000:  200kHz"
+.IP "   300000:  300kHz"
+.IP "   600000:  600kHz"
+.IP "   1536000: 1536kHz"
+.IP "   5000000: 5MHz"
+.IP "   6000000: 6MHz"
+.IP "   7000000: 7MHz"
+.IP "   8000000: 8MHz"
+.IP "-l squelch_level (default: 0/off)"
+.IP "-o oversampling (default: 1, 4 recommended)"
+.IP "-p ppm_error (default: 0)"
+.IP "-E enable_option (default: none)"
+.IP "   use multiple -E to enable multiple options"
+.IP "   edge:   enable lower edge tuning"
+.IP "   dc:     enable dc blocking filter"
+.IP "   deemp:  enable de-emphasis filter"
+.IP "   direct: enable direct sampling"
+.IP "   offset: enable offset tuning"
+.IP "filename ('-' means stdout)"
+.IP "         omitting the filename also uses stdout"
+.SH EXPERIMENTAL OPTIONS
+.IP "-r resample_rate (default: none / same as -s)"
+.IP "-t squelch_delay (default: 10)"
+.IP "   +values will mute/scan, -values will exit"
+.IP "-F fir_size (default: off)"
+.IP "   enables low-leakage downsample filter"
+.IP "   size can be 0 or 9.  0 has bad roll off"
+.IP "-A std/fast/lut choose atan math (default: std)"
+.SH EXAMPLES
+.IP "Produces signed 16 bit ints, use Sox or aplay to hear them."
+.IP "miri_fm ... | play -t raw -r 24k -es -b 16 -c 1 -V1 -"
+.IP "            | aplay -r 24k -f S16_LE -t raw -c 1"
+.IP "   -M wbfm  | play -r 32k ..."
+.IP "   -s 22050 | multimon -t raw /dev/stdin"
+.LP
+If the device can't be opened, make sure you have the appropriate
+rights to access the device (install udev-rules from the repository,
+or run it as root).
+.SH SEE ALSO
+miri_sdr(1)
+.SH AUTHOR
+This manual page was written by Maitland Bottoms
+for the Debian project (but may be used by others).
+.SH COPYRIGHT
+Copyright (c) 2023 A. Maitland Bottoms <bottoms@debian.org>
+.LP
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+.LP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.

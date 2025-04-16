@@ -1,0 +1,74 @@
+.TH "miri_sdr" 1 "2.0.0" MiriSDR "User Commands"
+.SH NAME
+miri_sdr \- an I/Q recorder for Mirics SDR devices
+.SH DESCRIPTION
+Software for the Mirics MSi2500 + MSi001 SDR platform
+.LP
+In-Phase and Quadrature Phase data can faithfully represent
+all of the information in a band of frequencies centered
+on a carrier signal frequency.
+.SH USAGE
+This program captures information from a band of frequencies
+and outputs the data in a form useful to other software radio
+programs.
+.SH SYNOPSIS
+.B  mirisdr [-f freq] [OPTIONS] [output file]
+.SH OPTIONS
+.IP "-f frequency_to_tune_to [Hz]"
+.IP "-m sample format (default: auto)"
+.IP "   504:    S8 (fastest)"
+.IP "   384:    S10 +2bits"
+.IP "   252:    S14"
+.IP "-e USB transfer mode (default: 1)"
+.IP "   1:      Isochronous (maximum 196.608 Mbit/s)"
+.IP "   2:      Bulk (maximum 333Mbit/s, depends on controller type)"
+.IP "-i IF mode (default: ZERO)"
+.IP "   0:       ZERO"
+.IP "   450000:  450 kHz"
+.IP "   1620000: 1620kHz"
+.IP "   2048000: 2048kHz"
+.IP "-w BW mode (default: 8MHz)"
+.IP "   200000:  200kHz"
+.IP "   300000:  300kHz"
+.IP "   600000:  600kHz"
+.IP "   1536000: 1536kHz"
+.IP "   5000000: 5MHz"
+.IP "   6000000: 6MHz"
+.IP "   7000000: 7MHz"
+.IP "   8000000: 8MHz"
+.IP "-s samplerate (default: 2048000 Hz)"
+.IP "-d device_index (default: 0)"
+.IP "-T device_type device variant (default: 0)"
+.IP "   0:       Default"
+.IP "   1:       SDRPlay"
+.IP "-g gain (default: 0 for auto)"
+.IP "-b output_block_size (default: 16 * 16384)"
+.IP "-S force sync output (default: async)"
+.IP filename
+ (a '-' dumps samples to stdout)
+.SH EXAMPLES
+.IP "Example: To tune to 392.0 MHz, and set the sample-rate to 1.8 MS/s, use:"
+ ./mirisdr /tmp/capture.bin -s 1.8e6 -f 392e6
+.LP
+to record samples to a file or to forward the data to a fifo.
+.LP
+If the device can't be opened, make sure you have the appropriate
+rights to access the device (install udev-rules from the repository,
+or run it as root).
+.SH SEE ALSO
+miri_fm(1), gnuradio(1)
+.SH AUTHOR
+This manual page was written by Maitland Bottoms
+for the Debian project (but may be used by others).
+.SH COPYRIGHT
+Copyright (c) 2013.2023 A. Maitland Bottoms <bottoms@debian.org>
+.LP
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+.LP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
